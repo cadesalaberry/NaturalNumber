@@ -53,6 +53,8 @@ public class Tester {
 		System.out.println("TEST FOR ADDITION (a+b) ");
 		System.out.println("Correct answer   :  " + reFormat(firstBigInteger.add(secondBigInteger)));
 		System.out.println("Your answer (a+b):  " + firstNum.add( secondNum ).toString() );
+		System.out.println("first number:  a = " + firstNum.toString());
+		System.out.println("second number: b = " + secondNum.toString());
 		System.out.println("Your answer (b+a):  " + secondNum.add( firstNum ).toString() );
 		
 		System.out.println("TEST FOR MULTIPLICATION (a*b) ");

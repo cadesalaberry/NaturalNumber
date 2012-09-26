@@ -74,40 +74,54 @@ public class NaturalNumber  {
 	}
 
 
-		
+	/**
+	 * Adds the two numbers and returns the result.
+	 * It assumes that second number is of the same base.
+	 * 
+	 * @return addition 
+	 */
 	public NaturalNumber add( NaturalNumber  second){
 				
-		//  initialize the sum as an empty list of coefficients
+		// Gets the biggest number of the two.
+		NaturalNumber biggest  = (this.coefficients.size() > second.coefficients.size() ?  this.clone()  : second.clone() );
+		NaturalNumber smallest = (this.coefficients.size() > second.coefficients.size() ? second.clone() :   this.clone() );
+				
+				
+		// Initializes the sum as an empty list of coefficients
+		NaturalNumber sum = new NaturalNumber( this.base );			
+		sum.coefficients = biggest.coefficients;
 		
-		NaturalNumber sum = new NaturalNumber( this.base );
-	
-		sum.coefficients = second.coefficients;
 		int carry = 0;
 		
-		System.out.println("==================== DEBUG START ===============");
+		System.err.println("adding\t  " + this   .toString() + "\tand " + second  .toString());
+		System.err.println("adding\t  " + smallest.toString() + "\tto  " + biggest.toString());
 		
-		System.out.println("adding " + this.toString() + " with " + second.toString());
-		System.out.println("size  = " + this.coefficients.size() + " + " + this.coefficients.size());
 		
-		for (int i = 0; i < sum.coefficients.size() && i < this.coefficients.size(); i++){
+		for (int i = 0; (i < smallest.coefficients.size() || carry != 0); i++){
 			
-			int temp  = 0;
+			//(Re)sets the 3 digits.
+			int digitSmallest = 0;
+			int digitBiggest  = 0;
+			int partialSum    = 0;
+			
+			//Makes sure we have no overflow.
+			try{	digitSmallest = smallest.coefficients.get(i);
+			} catch (IndexOutOfBoundsException e){}
+			try{	digitBiggest  =  biggest.coefficients.get(i);
+			} catch (IndexOutOfBoundsException e){}
+		
 			
 			
-			System.out.println("temp  = " + sum.coefficients.get(i) + " + " + this.coefficients.get(i));
+			partialSum	= digitBiggest + digitSmallest + carry;
+			carry		= partialSum / this.base;
+			partialSum  = partialSum % this.base;
 			
-			temp  = sum.coefficients.get(i) + this.coefficients.get(i) + carry;
-			carry = temp / this.base;
-			temp  = temp % this.base;
+			System.err.println("sum["+i+"]\t= " + partialSum + "\t = " + digitBiggest + " + " + digitSmallest + "\t+ " + carry);
 			
-			System.out.println("i\t= " + i + "\ttemp\t= " + temp + "\tcarry\t= " + carry);
-			
-			sum.coefficients.set(i, temp);
+			sum.coefficients.set(i, partialSum);
 			
 		}
-		
-		System.out.println("==================== DEBUG END  ===============");
-				
+			
 		return sum;		
 	}
 	
@@ -157,7 +171,7 @@ public class NaturalNumber  {
 		NaturalNumber product	= new NaturalNumber( this.base );
 		
 		//    ADD YOUR CODE HERE
-				
+		
 		return product;
 	}
 	
