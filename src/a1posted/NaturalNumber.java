@@ -76,7 +76,7 @@ public class NaturalNumber  {
 
 	/**
 	 * Adds the two numbers and returns the result.
-	 * It assumes that second number is of the same base.
+	 * It assumes that the two numbers to add are of the same base.
 	 * 
 	 * @return addition 
 	 */
@@ -87,39 +87,31 @@ public class NaturalNumber  {
 		NaturalNumber smallest = (this.coefficients.size() > second.coefficients.size() ? second.clone() :   this.clone() );
 				
 				
-		// Initializes the sum as an empty list of coefficients
+		// Initialises the sum as an empty list of coefficients.
 		NaturalNumber sum = new NaturalNumber( this.base );			
-		sum.coefficients = biggest.coefficients;
 		
+		// Initialises the carry.
 		int carry = 0;
 		
-		System.err.println("adding\t  " + this   .toString() + "\tand " + second  .toString());
-		System.err.println("adding\t  " + smallest.toString() + "\tto  " + biggest.toString());
-		
-		
-		for (int i = 0; (i < smallest.coefficients.size() || carry != 0); i++){
+		// Fills in the sum until we have no more carry.
+		for (int i = 0; (i < biggest.coefficients.size() || carry != 0); i++){
 			
-			//(Re)sets the 3 digits.
-			int digitSmallest = 0;
-			int digitBiggest  = 0;
-			int partialSum    = 0;
+			// (Re)sets the 2 digits.
+			int digitSmallest	= 0;
+			int digitBiggest	= 0;
 			
-			//Makes sure we have no overflow.
-			try{	digitSmallest = smallest.coefficients.get(i);
-			} catch (IndexOutOfBoundsException e){}
-			try{	digitBiggest  =  biggest.coefficients.get(i);
-			} catch (IndexOutOfBoundsException e){}
-		
+			// Makes sure we have no overflow.
+			try{	digitSmallest = smallest.coefficients.get(i); } catch (IndexOutOfBoundsException e){}
+			try{	digitBiggest  =  biggest.coefficients.get(i); } catch (IndexOutOfBoundsException e){}
 			
+			// Fills in the list of int.
+			sum.coefficients.add(( digitBiggest + digitSmallest + carry ) % this.base);
 			
-			partialSum	= digitBiggest + digitSmallest + carry;
-			carry		= partialSum / this.base;
-			partialSum  = partialSum % this.base;
+			// Stores the carry.
+			carry = ( digitBiggest + digitSmallest + carry ) / this.base;
 			
-			System.err.println("sum["+i+"]\t= " + partialSum + "\t = " + digitBiggest + " + " + digitSmallest + "\t+ " + carry);
-			
-			sum.coefficients.set(i, partialSum);
-			
+			// Debug Line to summarise the action of add().
+			// System.err.println("sum["+i+"]\t= " + partialSum + "\t = " + digitBiggest + " + " + digitSmallest + "\t+ " + carry);
 		}
 			
 		return sum;		

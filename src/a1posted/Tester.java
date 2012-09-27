@@ -26,6 +26,7 @@ public class Tester {
 	  */
 				
 		int[] first  =  {5, 7, 3, 8};  // Base 10 coefficient representation for the integer number 5738
+		//int[] first  =  {5, 7, 9, 8};  // Base 10 coefficient representation for the integer number 5798
 		int[] second =  {1, 8};        // Base 10 coefficient representation for the integer number 18
 		
 		//  You can test the correctness of your NaturalNumber implementation 
@@ -53,8 +54,6 @@ public class Tester {
 		System.out.println("TEST FOR ADDITION (a+b) ");
 		System.out.println("Correct answer   :  " + reFormat(firstBigInteger.add(secondBigInteger)));
 		System.out.println("Your answer (a+b):  " + firstNum.add( secondNum ).toString() );
-		System.out.println("first number:  a = " + firstNum.toString());
-		System.out.println("second number: b = " + secondNum.toString());
 		System.out.println("Your answer (b+a):  " + secondNum.add( firstNum ).toString() );
 		
 		System.out.println("TEST FOR MULTIPLICATION (a*b) ");
