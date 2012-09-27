@@ -111,7 +111,7 @@ public class NaturalNumber  {
 			carry = ( digitBiggest + digitSmallest + carry ) / this.base;
 			
 			// Debug Line to summarise the action of add().
-			// System.err.println("sum["+i+"]\t= " + partialSum + "\t = " + digitBiggest + " + " + digitSmallest + "\t+ " + carry);
+			System.err.println("sum["+i+"]\t= " + sum.coefficients.peekLast() + "\t = " + digitBiggest + " + " + digitSmallest + "\t+ " + carry);
 		}
 			
 		return sum;		
