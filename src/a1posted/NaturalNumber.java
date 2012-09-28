@@ -90,14 +90,14 @@ public class NaturalNumber {
 	 */
 	public NaturalNumber add(NaturalNumber second) {
 
-		// Gets the biggest number of the two, and produce a copy of the two.
+		// Gets the biggest number of the two, and produces a copy of the two.
 		LinkedList<Integer> biggest = this.coefficients.size() > second.coefficients
 				.size() ? this.clone().coefficients
 				: second.clone().coefficients;
 
-		LinkedList<Integer> smallest = (LinkedList<Integer>) (this.coefficients
-				.size() > second.coefficients.size() ? second.clone().coefficients
-				: this.clone().coefficients);
+		LinkedList<Integer> smallest = this.coefficients.size() > second.coefficients
+				.size() ? second.clone().coefficients
+				: this.clone().coefficients;
 
 		// Initialises the sum as an empty list of coefficients.
 		NaturalNumber sum = new NaturalNumber(this.base);
@@ -152,30 +152,38 @@ public class NaturalNumber {
 			throw new Exception();
 		}
 
-		/*
-		 * // Fills in the sum until we have no more carry. for (int i = 0; (i <
-		 * biggest.coefficients.size() || carry != 0); i++) {
-		 * 
-		 * // (Re)sets the 2 digits. int digitSmallest = 0; int digitBiggest =
-		 * 0;
-		 * 
-		 * // Makes sure we have no overflow. try { digitSmallest =
-		 * smallest.coefficients.get(i); } catch (IndexOutOfBoundsException e) {
-		 * } try { digitBiggest = biggest.coefficients.get(i); } catch
-		 * (IndexOutOfBoundsException e) { }
-		 * 
-		 * // Fills in the list of int. sum.coefficients.add((digitBiggest +
-		 * digitSmallest + carry) % this.base);
-		 * 
-		 * // Stores the carry. carry = (digitBiggest + digitSmallest + carry) /
-		 * this.base;
-		 * 
-		 * // Debug Line to summarise the action of add().
-		 * System.err.println("sum[" + i + "]\t= " + sum.coefficients.peekLast()
-		 * + "\t = " + digitBiggest + " + " + digitSmallest + "\t+ " + carry);
-		 * 
-		 * }
-		 */
+		// Produces a copy of the two numbers.
+		LinkedList<Integer> biggest = this.clone().coefficients;
+		LinkedList<Integer> smallest = second.clone().coefficients;
+
+		// Initialises the carry.
+		int carry = 0;
+
+		// Fills in the sum until we have no more digits.
+		while (biggest.size() != 0) {
+
+			// Makes sure we have no overflow.
+			int digitSmallest = (smallest.size() > 0 ? smallest.pop() : 0);
+			int digitBiggest = (biggest.size() > 0 ? biggest.pop() : 0);
+			int base = this.base;
+
+			if (carry != 0) {
+				base *= (-1);
+			}
+			// Fills in the list of int.
+			int finalDigit = (digitBiggest - digitSmallest - carry) % this.base;
+
+			difference.coefficients.add(finalDigit);
+
+			// Stores the carry.
+			carry = (digitBiggest + digitSmallest + carry) / this.base;
+
+			// Debug Line to summarise the action of add().
+			// System.err.println("sum[" + sum.coefficients.size() + "]\t= " +
+			// sum.coefficients.peekLast()
+			// + "\t = " + digitBiggest + " + " + digitSmallest + "\t+ " +
+			// carry);
+		}
 		return difference;
 	}
 
@@ -191,49 +199,52 @@ public class NaturalNumber {
 
 	public NaturalNumber multiply(NaturalNumber second) throws Exception {
 
-		// initialize product as an empty list of coefficients.
+		// initialises product as an empty list of coefficients.
 		NaturalNumber product = new NaturalNumber(this.base);
+		NaturalNumber partialProduct = new NaturalNumber(this.base);
 
-		// Copy the two numbers to avoid modification by mistake.
+		// Copies the two numbers to avoid modification by mistake.
 		NaturalNumber x = this.clone();
 		NaturalNumber y = second.clone();
 
-		int carry = 0;
-		int toAdd = this.base;
+		// Produces a copy of the two lists to prevent any modifications.
+		LinkedList<Integer> firstList = x.clone().coefficients;
+		LinkedList<Integer> secondList = y.clone().coefficients;
 
-		while (x.size() != 0 || carry != 0) {
+		int carry = 0;
+		int digitToAdd = this.base;
+
+		while (secondList.size() != 0 || carry != 0) {
 
 			// Makes sure we have no overflow.
-			int digitOfSecond = (y.size() > 0 ? y.pop() : 0);
+			int digitOfSecond = (secondList.size() > 0 ? secondList.pop() : 0);
 
-			y.push(0);
+			// Clears the partial Product we will fill in.
+			partialProduct.coefficients.clear();
 
-			while ((x.size() != 0 || carry != 0)) {
+			for (int i = 0; i < firstList.size() || carry != 0; i++) {
 
 				// Makes sure we have no overflow.
-				int digitOfFirst = (x.size() > 0 ? x.pop() : 0);
+				int digitOfFirst = (firstList.size() > i ? firstList.get(i) : 0);
 
 				// Fills in the list of int.
-				toAdd = (digitOfFirst * digitOfSecond + carry) % this.base;
-				product.coefficients.add(toAdd);
+				digitToAdd = (digitOfFirst * digitOfSecond + carry) % this.base;
+				partialProduct.coefficients.add(digitToAdd);
 
 				// Stores the carry.
 				carry = (digitOfFirst * digitOfSecond + carry) / this.base;
 
-				/*
-				 * while (y.getFirst() > 0) { if (y & 1) product += x; x <<= 1;
-				 * y >>= 1; }
-				 */
+				// System.err.println("\td: " + digitToAdd + "\tc: " + carry
+				// + "\tpart : " + partialProduct.toString());
 			}
 
-			while (y.coefficients.size() > 0) {
+			// Adds the partial product to the final result.
+			product = product.add(partialProduct);
 
-				int digitOfBottom = y.coefficients.pop();
-				for (int i = 0; i < digitOfBottom; i++) {
-					product.add(x);
-				}
-				x.coefficients.push(0);
-			}
+			// Adds a zero to x, equivalent to shifting left in original
+			// algorithm.
+			firstList.push(0);
+
 		}
 
 		return product;
