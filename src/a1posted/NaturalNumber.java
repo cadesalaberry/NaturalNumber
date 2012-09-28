@@ -146,7 +146,6 @@ public class NaturalNumber {
 		// from a higher coefficient to a lower one. So let's just work
 		// with a copy (a clone) of 'this' so that we don't modify 'this'.
 
-		NaturalNumber first = this.clone();
 		if (this.compareTo(second) < 0) {
 			System.out.println("Error:  subtract a-b requires that a > b");
 			throw new Exception();
@@ -165,24 +164,30 @@ public class NaturalNumber {
 			// Makes sure we have no overflow.
 			int digitSmallest = (smallest.size() > 0 ? smallest.pop() : 0);
 			int digitBiggest = (biggest.size() > 0 ? biggest.pop() : 0);
-			int base = this.base;
 
-			if (carry != 0) {
-				base *= (-1);
-			}
 			// Fills in the list of int.
-			int finalDigit = (digitBiggest - digitSmallest - carry) % this.base;
+			int finalDigit = (digitBiggest - digitSmallest - carry);
+
+			// Determines if there is a carry or not.
+			if (finalDigit < 0) {
+				finalDigit += this.base;
+				carry = 1;
+			} else {
+				carry = 0;
+			}
 
 			difference.coefficients.add(finalDigit);
 
-			// Stores the carry.
-			carry = (digitBiggest + digitSmallest + carry) / this.base;
-
 			// Debug Line to summarise the action of add().
-			// System.err.println("sum[" + sum.coefficients.size() + "]\t= " +
-			// sum.coefficients.peekLast()
-			// + "\t = " + digitBiggest + " + " + digitSmallest + "\t+ " +
-			// carry);
+			System.out.println("diff[" + difference.coefficients.size()
+					+ "]\t= " + difference.coefficients.peekLast() + "\t = "
+					+ digitBiggest + " - " + digitSmallest + "\t(" + carry
+					+ ")");
+		}
+
+		// Cleans the number to get ride of all the zeros.
+		while (difference.coefficients.peekLast() == 0) {
+			difference.coefficients.removeLast();
 		}
 		return difference;
 	}
@@ -259,9 +264,17 @@ public class NaturalNumber {
 
 	public NaturalNumber divide(NaturalNumber divisor) throws Exception {
 
-		// initialize quotient as an empty list of coefficients
-
+		// Initializes quotient as an empty list of coefficients
 		NaturalNumber quotient = new NaturalNumber(this.base);
+		
+		if (this.compareTo(divisor) < 0) {
+			quotient.coefficients.add(0);
+			return quotient;
+		}
+
+		// Produces a copy of the two lists to prevent any modifications.
+		LinkedList<Integer> firstList = this.clone().coefficients;
+		LinkedList<Integer> secondList = divisor.clone().coefficients;
 
 		// ADD YOUR CODE HERE.
 
@@ -274,7 +287,7 @@ public class NaturalNumber {
 	 * need to clone the number and work with the cloned number instead of the
 	 * original.
 	 */
-
+	@Override
 	public NaturalNumber clone() {
 
 		// For technical reasons we'll discuss later, this methods
