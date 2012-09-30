@@ -165,7 +165,7 @@ public class NaturalNumber {
 			int digitSmallest = (smallest.size() > 0 ? smallest.pop() : 0);
 			int digitBiggest = (biggest.size() > 0 ? biggest.pop() : 0);
 
-			// Fills in the list of int.
+			// Generate the next digit.
 			int finalDigit = (digitBiggest - digitSmallest - carry);
 
 			// Determines if there is a carry or not.
@@ -179,10 +179,10 @@ public class NaturalNumber {
 			difference.coefficients.add(finalDigit);
 
 			// Debug Line to summarise the action of add().
-			System.out.println("diff[" + difference.coefficients.size()
-					+ "]\t= " + difference.coefficients.peekLast() + "\t = "
-					+ digitBiggest + " - " + digitSmallest + "\t(" + carry
-					+ ")");
+			// System.out.println("diff[" + difference.coefficients.size()
+			// + "]\t= " + difference.coefficients.peekLast() + "\t = "
+			// + digitBiggest + " - " + digitSmallest + "\t(" + carry
+			// + ")");
 		}
 
 		// Cleans the number to get ride of all the zeros.
@@ -266,9 +266,15 @@ public class NaturalNumber {
 
 		// Initializes quotient as an empty list of coefficients
 		NaturalNumber quotient = new NaturalNumber(this.base);
-		
-		if (this.compareTo(divisor) < 0) {
+
+		// Deals with the case of a < b and a = b.
+		int lessThanZero = this.compareTo(divisor);
+
+		if (lessThanZero < 0) {
 			quotient.coefficients.add(0);
+			return quotient;
+		} else if (this.compareTo(divisor) < 1) {
+			quotient.coefficients.add(1);
 			return quotient;
 		}
 

@@ -28,9 +28,8 @@ public class Tester {
 		// int[] first = { 5, 7, 3, 8 }; // Base 10 coefficient representation
 		// for
 		// the integer number 5738
-		int[] first = { 5, 7, 0, 0 }; // Base 10 coefficient representation for
-										// the integer number 5798
-		int[] second = { 5, 6, 1, 8 }; // Base 10 coefficient representation for
+		int[] first = { 5, 7, 0, 0 };
+		int[] second = { 5, 6, 1, 9 }; // Base 10 coefficient representation for
 										// the
 										// integer number 18
 
