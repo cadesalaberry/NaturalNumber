@@ -25,13 +25,26 @@ public class Tester {
 		 * the PDF specification.
 		 */
 
-		// int[] first = { 5, 7, 3, 8 }; // Base 10 coefficient representation
-		// for
-		// the integer number 5738
-		int[] first = { 5, 7, 0, 0 };
-		int[] second = { 5, 6, 1, 9 }; // Base 10 coefficient representation for
-										// the
-										// integer number 18
+		/*
+		 * Base 10 coefficient representation for the integer number 5738
+		 */
+		int[] first = { 5, 7, 3, 8 };
+
+		/*
+		 * Base 10 coefficient representation for the integer number 18
+		 */
+		int[] second = { 1, 8 };
+
+		/*
+		 * Buggy number.
+		 */
+		// int[] first = {1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0,
+		// 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0,
+		// 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1,
+		// 0, 0};
+		// int[] second ={1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		// 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		//
 
 		// You can test the correctness of your NaturalNumber implementation
 		// by using Java's BigInteger class.

@@ -22,7 +22,7 @@ public class NaturalNumber {
 
 	int base;
 
-	private LinkedList<Integer> coefficients;
+	LinkedList<Integer> coefficients;
 
 	// For any base and any positive integer, the representation of that
 	// positive
@@ -218,7 +218,8 @@ public class NaturalNumber {
 
 		int carry = 0;
 		int digitToAdd = this.base;
-
+		
+		// Reads the entire second number.
 		while (secondList.size() != 0 || carry != 0) {
 
 			// Makes sure we have no overflow.
@@ -267,7 +268,7 @@ public class NaturalNumber {
 		// Initializes quotient as an empty list of coefficients
 		NaturalNumber quotient = new NaturalNumber(this.base);
 
-		// Deals with the case of a < b and a = b.
+		// Deals quickly with the case for which a < b and a = b.
 		int lessThanZero = this.compareTo(divisor);
 
 		if (lessThanZero < 0) {
@@ -279,10 +280,39 @@ public class NaturalNumber {
 		}
 
 		// Produces a copy of the two lists to prevent any modifications.
-		LinkedList<Integer> firstList = this.clone().coefficients;
-		LinkedList<Integer> secondList = divisor.clone().coefficients;
+		NaturalNumber mainDividend = this.clone();
+		NaturalNumber mainDivisor = divisor.clone();
+		NaturalNumber tempDividend = new NaturalNumber(this.base);
 
-		// ADD YOUR CODE HERE.
+		// Loops while we haven't read every digits of the Divisor.
+		while (mainDividend.coefficients.size() > 0) {
+
+			// Starts reading the Dividend.
+			tempDividend.coefficients.push(mainDividend.coefficients
+					.pollLast());
+			
+			// Logs the Dividend. (Debug Line)
+			// System.err.print("tempDividend = " + tempDividend);
+
+			// Counts how many times the Divisor fills in the Dividend.
+			int digitQuotient = 0;
+			while (tempDividend.compareTo(mainDivisor) > 0) {
+
+				tempDividend = tempDividend.subtract(mainDivisor);
+				digitQuotient++;
+
+			}
+
+			// Records the previous number of times as the first digit of
+			// Quotient.
+			if (digitQuotient != 0) {
+				quotient.coefficients.push(digitQuotient);
+			}
+
+			// Logs the procedure. (Debug Line)
+			// System.err.println("\t= " + digitQuotient + " * " + mainDivisor +
+			// " + " + tempDividend);
+		}
 
 		return quotient;
 	}
