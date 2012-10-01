@@ -22,7 +22,7 @@ public class NaturalNumber {
 
 	int base;
 
-	LinkedList<Integer> coefficients;
+	private LinkedList<Integer> coefficients;
 
 	// For any base and any positive integer, the representation of that
 	// positive
