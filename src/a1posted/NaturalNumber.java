@@ -127,7 +127,7 @@ public class NaturalNumber {
 
 		}
 
-		return sum;
+		return cleanTrailingZeros(sum);
 	}
 
 	/*
@@ -185,11 +185,7 @@ public class NaturalNumber {
 			// + ")");
 		}
 
-		// Cleans the number to get ride of all the zeros.
-		while (difference.coefficients.peekLast() == 0) {
-			difference.coefficients.removeLast();
-		}
-		return difference;
+		return cleanTrailingZeros(difference);
 	}
 
 	// The multiply method should NOT be the same as what you learned in
@@ -218,7 +214,7 @@ public class NaturalNumber {
 
 		int carry = 0;
 		int digitToAdd = this.base;
-		
+
 		// Reads the entire second number.
 		while (secondList.size() != 0 || carry != 0) {
 
@@ -253,7 +249,7 @@ public class NaturalNumber {
 
 		}
 
-		return product;
+		return cleanTrailingZeros(product);
 	}
 
 	// The divide method divides 'this' by 'second' i.e. this/second.
@@ -268,18 +264,7 @@ public class NaturalNumber {
 		// Initializes quotient as an empty list of coefficients
 		NaturalNumber quotient = new NaturalNumber(this.base);
 
-		// Deals quickly with the case for which a < b and a = b.
-		int lessThanZero = this.compareTo(divisor);
-
-		if (lessThanZero < 0) {
-			quotient.coefficients.add(0);
-			return quotient;
-		} else if (this.compareTo(divisor) < 1) {
-			quotient.coefficients.add(1);
-			return quotient;
-		}
-
-		// Produces a copy of the two lists to prevent any modifications.
+				// Produces a copy of the two lists to prevent any modifications.
 		NaturalNumber mainDividend = this.clone();
 		NaturalNumber mainDivisor = divisor.clone();
 		NaturalNumber tempDividend = new NaturalNumber(this.base);
@@ -288,9 +273,9 @@ public class NaturalNumber {
 		while (mainDividend.coefficients.size() > 0) {
 
 			// Starts reading the Dividend.
-			tempDividend.coefficients.push(mainDividend.coefficients
-					.pollLast());
-			
+			tempDividend.coefficients
+					.push(mainDividend.coefficients.pollLast());
+
 			// Logs the Dividend. (Debug Line)
 			// System.err.print("tempDividend = " + tempDividend);
 
@@ -314,7 +299,17 @@ public class NaturalNumber {
 			// " + " + tempDividend);
 		}
 
-		return quotient;
+		return cleanTrailingZeros(quotient);
+	}
+
+	private NaturalNumber cleanTrailingZeros(NaturalNumber toClean) {
+
+		// Cleans the number to get ride of all the zeros.
+		while (toClean.coefficients.peekLast() == 0
+				&& toClean.coefficients.size() > 1) {
+			toClean.coefficients.removeLast();
+		}
+		return toClean;
 	}
 
 	/*
