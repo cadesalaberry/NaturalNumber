@@ -264,7 +264,7 @@ public class NaturalNumber {
 		// Initializes quotient as an empty list of coefficients
 		NaturalNumber quotient = new NaturalNumber(this.base);
 
-				// Produces a copy of the two lists to prevent any modifications.
+		// Produces a copy of the two lists to prevent any modifications.
 		NaturalNumber mainDividend = this.clone();
 		NaturalNumber mainDivisor = divisor.clone();
 		NaturalNumber tempDividend = new NaturalNumber(this.base);
@@ -281,7 +281,7 @@ public class NaturalNumber {
 
 			// Counts how many times the Divisor fills in the Dividend.
 			int digitQuotient = 0;
-			while (tempDividend.compareTo(mainDivisor) > 0) {
+			while (tempDividend.compareTo(mainDivisor) >= 0) {
 
 				tempDividend = tempDividend.subtract(mainDivisor);
 				digitQuotient++;
@@ -290,9 +290,8 @@ public class NaturalNumber {
 
 			// Records the previous number of times as the first digit of
 			// Quotient.
-			if (digitQuotient != 0) {
-				quotient.coefficients.push(digitQuotient);
-			}
+
+			quotient.coefficients.push(digitQuotient);
 
 			// Logs the procedure. (Debug Line)
 			// System.err.println("\t= " + digitQuotient + " * " + mainDivisor +
